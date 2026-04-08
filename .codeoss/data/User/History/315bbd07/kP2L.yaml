@@ -1,0 +1,28 @@
+sources:
+  ecommerce-source:
+    kind: bigquery
+    project: track2code2
+tools:
+  # Công cụ phân tích hiệu suất sản phẩm
+  analyze_product_performance:
+    kind: bigquery-sql
+    source: ecommerce-source
+    statement: |
+      SELECT name, category, retail_price, 
+             (SELECT COUNT(*) FROM `bigquery-public-data.thelook_ecommerce.order_items` WHERE product_id = p.id) as total_orders
+      FROM `bigquery-public-data.thelook_ecommerce.products` AS p
+      WHERE LOWER(category) = LOWER(@category)
+      ORDER BY total_orders DESC
+      LIMIT @top_n
+    description: |
+      Analyze top-selling products in a specific category to inform UX/UI featuring decisions. 
+    parameters:
+      - name: category
+        type: string
+        description: "The product category (e.g., 'Accessories', 'Apparel')."
+      - name: top_n
+        type: integer
+        description: "Number of top products to return."
+toolsets:
+  ecommerce_pro_set:
+    - analyze_product_performance

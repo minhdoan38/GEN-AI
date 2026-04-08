@@ -1,0 +1,30 @@
+# tools.yaml nâng cấp
+sources:
+  my-bq-source:
+    kind: bigquery
+    project: track2code2 
+tools:
+  search_release_notes_advanced:
+    kind: bigquery-sql
+    source: my-bq-source
+    # Chuyển sang dùng tham số để Agent tự điền dựa trên câu hỏi của người dùng
+    statement: |
+      SELECT product_name, description, published_at
+      FROM `bigquery-public-data.google_cloud_release_notes.release_notes`
+      WHERE published_at >= TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL @days_ago DAY)
+      AND (@product_name IS NULL OR LOWER(product_name) LIKE CONCAT('%', LOWER(@product_name), '%'))
+      ORDER BY published_at DESC
+      LIMIT 10
+    description: |
+      Professional tool to retrieve Google Cloud release notes. 
+      Supports filtering by number of days and specific product names.
+    parameters:
+      - name: days_ago
+        type: integer
+        description: Number of days to look back for updates.
+      - name: product_name
+        type: string
+        description: Optional product name to filter (e.g., 'Vertex AI', 'BigQuery').
+toolsets:
+  pro_data_set:
+    - search_release_notes_advanced

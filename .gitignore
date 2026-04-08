@@ -1,0 +1,7 @@
+mcp-toolbox/toolbox
+.cache/
+.cloudcode/
+__pycache__/
+*.log
+venv/
+.env
