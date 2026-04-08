@@ -375,3 +375,12 @@ git commit -m "Initial clean commit: E-commerce Architect Project"
 git remote add origin https://github.com/minhdoan38/GEN-AI
 # 7. Đẩy lên GitHub (Dùng --force để ghi đè hoàn toàn bản lỗi cũ)
 git push -u origin main --force
+# 1. Đảm bảo tất cả file đã được đưa vào hàng đợi (Staging)
+git add .
+# 2. Tạo commit đầu tiên (Bắt buộc phải có bước này thì nhánh mới tồn tại)
+git commit -m "Initial clean commit for track2code-2"
+# 3. Ép tên nhánh hiện tại thành 'main' (Đây là bước giải quyết lỗi refspec)
+git branch -M main
+# 4. Đẩy lên GitHub
+git push -u origin main --force
+rm -rf zoo_guide_agent
