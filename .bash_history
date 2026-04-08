@@ -352,3 +352,26 @@ git add .
 git commit -m "Final cleanup: Remove large binaries and optimize project for track2code-2"
 # Đẩy lên GitHub và ép buộc (force) ghi đè lên các bản lỗi cũ
 git push origin main --force
+# 1. Xóa thư mục cấu hình Git cũ (Xóa lịch sử lỗi)
+rm -rf .git
+# 2. Khởi tạo lại Git mới từ đầu
+git init
+# 3. Tạo lại file .gitignore chuẩn để CHẶN tệp nặng ngay lập tức
+cat <<EOF > .gitignore
+mcp-toolbox/toolbox
+.cache/
+.cloudcode/
+__pycache__/
+*.log
+venv/
+.env
+EOF
+
+# 4. Thêm tất cả code vào (Lúc này Git sẽ tự bỏ qua các file >100MB nhờ .gitignore)
+git add .
+# 5. Tạo commit đầu tiên "sạch"
+git commit -m "Initial clean commit: E-commerce Architect Project"
+# 6. Kết nối lại với GitHub của bạn
+git remote add origin https://github.com/minhdoan38/GEN-AI
+# 7. Đẩy lên GitHub (Dùng --force để ghi đè hoàn toàn bản lỗi cũ)
+git push -u origin main --force
